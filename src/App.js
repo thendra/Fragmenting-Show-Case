@@ -1,6 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import ApolloClient, { gql } from "apollo-boost";
+
+const client = new ApolloClient({
+  uri: "https://metaphysics-staging.artsy.net/",
+});
+
+client
+  .query({
+    query: gql`
+      {
+        popular_artists {
+          artists {
+            name
+          }
+        }
+      }
+    `,
+  })
+  .then((result) => console.log(result));
 
 function App() {
   return (
