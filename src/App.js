@@ -1,9 +1,9 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import ApolloClient, { gql } from "apollo-boost";
-import { ApolloProvider, useQuery } from "@apollo/react-hooks";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+import { BrowserRouter as Router } from "react-router-dom";
 import Artists from "./Artists";
+import { Box } from "@material-ui/core";
 // import { createHttpLink } from "apollo-link-http";
 // import { setContext } from "apollo-link-context";
 // import { InMemoryCache } from "apollo-cache-inmemory";
@@ -31,33 +31,20 @@ import Artists from "./Artists";
 //   cache: new InMemoryCache(),
 // });
 
-const client = new ApolloClient({
-  uri: "https://metaphysics-staging.artsy.net/",
-});
+const App = () => {
+  const client = new ApolloClient({
+    uri: "https://metaphysics-staging.artsy.net/",
+  });
 
-const POPULAR_ARTISTS = gql`
-  {
-    popular_artists {
-      artists {
-        name
-      }
-    }
-  }
-`;
-
-const { loading, error, data } = useQuery(POPULAR_ARTISTS);
-
-function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <Artists data={data} loading={loading} error={error} />
-        </header>
-      </div>
+      <Router>
+        <Box px={5}>
+          <Artists />
+        </Box>
+      </Router>
     </ApolloProvider>
   );
-}
+};
 
 export default App;
