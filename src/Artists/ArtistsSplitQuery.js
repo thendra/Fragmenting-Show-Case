@@ -3,8 +3,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { Box, Button, Typography } from "@material-ui/core";
 import { Switch, Route, Link, useRouteMatch } from "react-router-dom";
-import ArtistProfile from "../ArtistProfile";
-import fragments from "../fragments";
+import { ArtistProfileWithQuery as ArtistProfile } from "../ArtistProfile";
 
 const Artists = () => {
   const ARTIST_NAMES_1 = gql`
@@ -12,20 +11,16 @@ const Artists = () => {
       artists(size: 100, page: 10) {
         id
         name
-        ...ARTIST
       }
     }
-    ${fragments.artistFull}
   `;
   const ARTIST_NAMES_2 = gql`
     {
       artists(size: 100, page: 11) {
         id
         name
-        ...ARTIST
       }
     }
-    ${fragments.artistFull}
   `;
 
   const { loading, error, data: page1 } = useQuery(ARTIST_NAMES_1);
@@ -51,7 +46,7 @@ const Artists = () => {
               {artists.map(({ name, id }) => (
                 <Box m={2} key={id}>
                   <Button variant="contained" m={2} p={3} component={Link}>
-                    <Link to={`/${id}`}>{name}</Link>
+                    <Link to={`${match.path}/${id}`}>{name}</Link>
                   </Button>
                 </Box>
               ))}
@@ -59,14 +54,12 @@ const Artists = () => {
           </Box>
         </Route>
         <Route
-          path={`/:id`}
-          exact
+          path={`${match.path}/:id`}
           render={({ match }) => {
             if (artists) {
-              console.log(artists.find(({ id }) => id === match.params.id));
               return (
                 <ArtistProfile
-                  data={artists.find(({ id }) => id === match.params.id)}
+                  id={artists.find(({ id }) => id === match.params.id).id}
                 />
               );
             }

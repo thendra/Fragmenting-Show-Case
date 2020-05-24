@@ -1,9 +1,9 @@
 import React from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { BrowserRouter as Router } from "react-router-dom";
-import Artists from "./Artists";
-import { Box } from "@material-ui/core";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import Artists, { ArtistsSplitQuery } from "./Artists";
+import { Box, Button } from "@material-ui/core";
 // import { createHttpLink } from "apollo-link-http";
 // import { setContext } from "apollo-link-context";
 // import { InMemoryCache } from "apollo-cache-inmemory";
@@ -40,7 +40,27 @@ const App = () => {
     <ApolloProvider client={client}>
       <Router>
         <Box px={5}>
-          <Artists />
+          <Box display="flex">
+            <Button
+              component={Link}
+              to="/with-splitting"
+              variant="contained"
+              color="error"
+            >
+              With query splitting
+            </Button>
+            <Button component={Link} to="/" variant="contained" color="warning">
+              Without query splitting
+            </Button>
+          </Box>
+          <Switch>
+            <Route path="/with-splitting">
+              <ArtistsSplitQuery />
+            </Route>
+            <Route path="/">
+              <Artists />
+            </Route>
+          </Switch>
         </Box>
       </Router>
     </ApolloProvider>
