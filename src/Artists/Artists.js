@@ -6,23 +6,16 @@ import { Switch, Route, Link } from "react-router-dom";
 import ArtistProfile from "../ArtistProfile";
 
 const Artists = () => {
-  const POPULAR_ARTISTS = gql`
+  const ARTIST_NAMES = gql`
     {
       artists(size: 100, page: 10) {
         id
         name
-        bio
-        artworks {
-          id
-          title
-          imageUrl
-          date
-        }
       }
     }
   `;
 
-  const { loading, error, data } = useQuery(POPULAR_ARTISTS);
+  const { loading, error, data } = useQuery(ARTIST_NAMES);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
   const artists = data.artists;
@@ -52,7 +45,7 @@ const Artists = () => {
             if (artists) {
               return (
                 <ArtistProfile
-                  data={artists.find(({ id }) => id === match.params.id)}
+                  id={artists.find(({ id }) => id === match.params.id).id}
                 />
               );
             }
