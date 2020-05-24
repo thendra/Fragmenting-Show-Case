@@ -3,7 +3,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Artists, { ArtistsSplitQuery } from "./Artists";
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, Typography, makeStyles } from "@material-ui/core";
 // import { createHttpLink } from "apollo-link-http";
 // import { setContext } from "apollo-link-context";
 // import { InMemoryCache } from "apollo-cache-inmemory";
@@ -32,33 +32,72 @@ import { Box, Button } from "@material-ui/core";
 // });
 
 const App = () => {
+  const useStyles = makeStyles({
+    blockButton: {
+      width: "100%",
+      height: "100%",
+    },
+  });
+
   const client = new ApolloClient({
     uri: "https://metaphysics-staging.artsy.net/",
   });
 
+  const classes = useStyles();
   return (
     <ApolloProvider client={client}>
       <Router>
         <Box px={5}>
           <Box display="flex">
-            <Button
-              component={Link}
-              to="/with-splitting"
-              variant="contained"
-              color="error"
-            >
-              With query splitting
-            </Button>
-            <Button component={Link} to="/" variant="contained" color="warning">
-              Without query splitting
+            <Button component={Link} to="/">
+              Home
             </Button>
           </Box>
           <Switch>
-            <Route path="/with-splitting">
+            <Route path="/with-fragmenting">
               <ArtistsSplitQuery />
             </Route>
-            <Route path="/">
+            <Route path="/without-fragmenting">
               <Artists />
+            </Route>
+            <Route path="/">
+              <Typography variant="h1">Data fragmenting demo</Typography>
+              <Typography>
+                This Art catelogue app aims to show how splitting up how you
+                pull data into your application can have a big effect on the
+                user experience of your app.
+              </Typography>
+              <Typography>
+                Clicking the left button will take you the app where the data
+                for all the artists is pulled in on initial rendering of the
+                app, whereas the button on the right will take you to the app
+                where only the data required for that page is pulled in on
+                render.
+              </Typography>
+              <Box display="flex" pt={4}>
+                <Box width="50%" height="200px">
+                  <Button
+                    className={classes.blockButton}
+                    color="secondary"
+                    component={Link}
+                    to="/without-fragmenting"
+                    variant="contained"
+                  >
+                    Fetch Artists Without Fragmenting
+                  </Button>
+                </Box>
+                <Box width="50%" height="200px">
+                  <Button
+                    className={classes.blockButton}
+                    component={Link}
+                    color="primary"
+                    to="/with-fragmenting"
+                    variant="contained"
+                  >
+                    Fetch Artists With Fragmenting
+                  </Button>
+                </Box>
+              </Box>
             </Route>
           </Switch>
         </Box>

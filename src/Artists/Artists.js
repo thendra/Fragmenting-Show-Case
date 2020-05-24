@@ -37,7 +37,6 @@ const Artists = () => {
   if (loading || page2Loading) return <p>Loading...</p>;
   if (error || page2Error) return <p>Error :(</p>;
   const artists = page1.artists.concat(page2.artists);
-  console.log(artists);
   return (
     <>
       <Switch>
@@ -51,7 +50,7 @@ const Artists = () => {
               {artists.map(({ name, id }) => (
                 <Box m={2} key={id}>
                   <Button variant="contained" m={2} p={3} component={Link}>
-                    <Link to={`/${id}`}>{name}</Link>
+                    <Link to={`${match.path}/${id}`}>{name}</Link>
                   </Button>
                 </Box>
               ))}
@@ -59,11 +58,10 @@ const Artists = () => {
           </Box>
         </Route>
         <Route
-          path={`/:id`}
+          path={`${match.path}/:id`}
           exact
           render={({ match }) => {
             if (artists) {
-              console.log(artists.find(({ id }) => id === match.params.id));
               return (
                 <ArtistProfile
                   data={artists.find(({ id }) => id === match.params.id)}

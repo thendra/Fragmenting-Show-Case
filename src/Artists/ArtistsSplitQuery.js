@@ -32,7 +32,6 @@ const Artists = () => {
   if (loading || page2Loading) return <p>Loading...</p>;
   if (error || page2Error) return <p>Error :(</p>;
   const artists = page1.artists.concat(page2.artists);
-  console.log(artists);
   return (
     <>
       <Switch>

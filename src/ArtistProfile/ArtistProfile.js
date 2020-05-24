@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { gql } from "apollo-boost";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -29,7 +28,6 @@ const ArtistProfile = ({ data, loading, error }) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  console.log(data);
   const {
     name,
     bio,
@@ -41,10 +39,9 @@ const ArtistProfile = ({ data, loading, error }) => {
     imageUrl,
   } = data;
 
-  console.log(data);
   return (
     <Box>
-      <Button to="/" component={Link}>
+      <Button to="/without-fragmenting" component={Link}>
         Back
       </Button>
       <Box

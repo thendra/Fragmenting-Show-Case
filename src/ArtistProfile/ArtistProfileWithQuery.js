@@ -57,7 +57,7 @@ const ArtistProfile = ({ id }) => {
 
   return (
     <Box>
-      <Button to="/" component={Link}>
+      <Button to="/with-fragmenting" component={Link}>
         Back
       </Button>
       <Box
