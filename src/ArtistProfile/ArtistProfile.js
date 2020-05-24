@@ -6,6 +6,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Box from "@material-ui/core/Box";
+import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
@@ -17,7 +18,18 @@ const ArtistProfile = ({ id }) => {
       artist(id: $id) {
         id
         name
+        imageUrl
         bio
+        gender
+        birthday
+        deathday
+        location
+        sales {
+          id
+          artworks {
+            id
+          }
+        }
         artworks {
           id
           title
@@ -34,6 +46,11 @@ const ArtistProfile = ({ id }) => {
     media: {
       height: 140,
     },
+    avatar: {
+      width: "200px",
+      height: "200px",
+      marginRight: "50px",
+    },
   });
   const classes = useStyles();
   const { loading, error, data } = useQuery(ARTIST_BY_ID, {
@@ -42,7 +59,16 @@ const ArtistProfile = ({ id }) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  const { name, bio, artworks } = data.artist;
+  const {
+    name,
+    bio,
+    artworks,
+    gender,
+    birthday,
+    deathday,
+    location,
+    imageUrl,
+  } = data.artist;
 
   console.log(data);
   return (
@@ -50,10 +76,23 @@ const ArtistProfile = ({ id }) => {
       <Button to="/" component={Link}>
         Back
       </Button>
-      <Typography gutterBottom variant="h1">
-        {name}
-      </Typography>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        p={2}
+        mb={3}
+        mx={-5}
+        bgcolor="violet"
+      >
+        <Avatar alt="Remy Sharp" src={imageUrl} className={classes.avatar} />
+        <Typography variant="h1">{name}</Typography>
+      </Box>
       <Typography variant="h3">{bio}</Typography>
+      <Typography variant="h4">Gender: {gender}</Typography>
+      <Typography variant="h4">Year of birth: {birthday}</Typography>
+      <Typography variant="h4">Year of death: {deathday || "N/A"}</Typography>
+      <Typography variant="h4">Location: {location}</Typography>
       <Box display="flex" justifyContent="space-between" flexWrap="wrap">
         {artworks &&
           artworks.map(({ id, title, imageUrl, date, description }) => (
