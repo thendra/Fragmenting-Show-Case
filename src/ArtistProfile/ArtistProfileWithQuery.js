@@ -10,8 +10,20 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
+import { useQuery } from "@apollo/react-hooks";
+import fragments from "../fragments";
 
-const ArtistProfile = ({ data, loading, error }) => {
+const ArtistProfile = ({ id }) => {
+  const ARTIST_BY_ID = gql`
+    query ARTISTBYID($id: String!) {
+      artist(id: $id) {
+        id
+        name
+        ...ARTIST
+      }
+    }
+    ${fragments.artistFull}
+  `;
   const useStyles = makeStyles({
     root: {
       width: 345,
@@ -26,10 +38,12 @@ const ArtistProfile = ({ data, loading, error }) => {
     },
   });
   const classes = useStyles();
+  const { loading, error, data } = useQuery(ARTIST_BY_ID, {
+    variables: { id },
+  });
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  console.log(data);
   const {
     name,
     bio,
@@ -39,9 +53,8 @@ const ArtistProfile = ({ data, loading, error }) => {
     deathday,
     location,
     imageUrl,
-  } = data;
+  } = data.artist;
 
-  console.log(data);
   return (
     <Box>
       <Button to="/" component={Link}>
