@@ -12,6 +12,16 @@ const Artists = () => {
         id
         name
         bio
+        gender
+        birthday
+        deathday
+        location
+        sales {
+          id
+          artworks {
+            id
+          }
+        }
         artworks {
           id
           title
